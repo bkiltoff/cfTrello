@@ -11,7 +11,7 @@ those artifacts are valid.
     <cfset Variables.api		=	"1"		>
     <cfset Variables.apiURL		=	"https://api.trello.com/">
     <cfset Variables.orgName	=	""		>
-	<cfset Variables.urls		=	[]		>
+	<cfset Variables.urls		=	{}		>
     
 <!---
 	init function
@@ -179,29 +179,4 @@ those artifacts are valid.
 		<cfreturn cfhttp.FileContent>
     </cffunction>
 
-<!---
-	test function
---->
-	<cffunction name="TEST" access="public" returntype="string">
-    	<cfargument name="nameofarg" type="string" default="null">
-    	<cfset boardIDs = getBoardList()>
-        <cfset boardsList = "">
-        <cfscript>
-		/*This script creates a string of boardIDs from boardIDs*/
-		for (i = 1; i <= ArrayLen(boardIDs); i++)
-		{
-			boardsList = boardsList & ", " & boardIDs[i].name;
-		}
-		</cfscript>
-		<cfset myResult=	"key=" 			& 	Variables.apiKey 	& "<br>" &	
-							"token="		&	Variables.token		& "<br>" &
-							"org="			&	Variables.orgName	& "<br>" &
-							"boardURL="		&	Variables.boardURL 	& "<br>" &
-							"listsURL=" 	&	Variables.listsURL	& "<br>" &
-							"cardsURL=" 	&	arguments.nameofarg	& "<br>" &
-							"listOfBoards="	& 	boardsList 			& "<br>" 
-		>
-		<cfreturn myResult>
-	</cffunction>
-    
 </cfcomponent>

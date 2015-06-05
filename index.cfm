@@ -25,11 +25,4 @@ get a token for read/write for 1day = "https://trello.com/1/authorize?key=821653
 <!--- initialize trello object --->
 <cfset trelloConnection = CreateObject("component","trelloAuth").init(#trelloKey#,#trelloToken#,#trelloAPInumber#,#trelloOrgName#) 	/>
 
-<cfscript>
-trelloConnection.setBoardID(boardID=#trelloBoardID#);
-</cfscript>
-
-<cfoutput>
-#trelloConnection.TEST()#
-</cfoutput>
-
+<p> Created trelloConnection object </p>
