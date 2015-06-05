@@ -1,0 +1,72 @@
+
+
+<cfset trelloBoardsURL	="https://api.trello.com/1/boards/P66f8VXz" />
+<cfset trelloListsURL	=trelloBoardsURL&"/lists" 					/>
+<cfset trelloCardsURL 	="https://api.trello.com/1/cards"			/>
+<cfset listIWant		="Test"										/>
+
+<!---add a list to my board--->
+<!---
+	<cfhttp method="post" 
+			url="#trelloListsURL#"
+	>
+			<cfhttpparam name="key"		type="URL"	value="#trelloKey#">
+			<cfhttpparam name="name"	type="URl"	value="new list via api">
+			<cfhttpparam name="token"	type="URL"	value="#trelloToken#">
+	
+	
+	</cfhttp>
+--->
+
+<!---create a call to get existing lists into an array --->
+	<cfhttp method="get"
+    		url=#trelloListsURL#
+	>
+     		<cfhttpparam name="key"			type="URL"	value="#trelloKey#">
+            <cfhttpparam name="fields"		type="URL"	value="name">
+    </cfhttp>
+	<cfset AllLists=DeserializeJSON(cfhttp.FileContent) />
+<!--- end call to get all lists into an array --->
+
+<cfset idListIWant="" />
+<!--- loop over the array and find the id of the list I want --->
+	<cfloop index="i" from="1" to="#ArrayLen(AllLists)#">
+    	<cfif AllLists[i].name IS "#listIWant#">
+        	<cfset idListIWant="#AllLists[i].id#">
+        </cfif>
+    </cfloop>
+    
+<cfdump var="#idListIWant#" />
+<!--- add a card to the list I want --->
+	<cfhttp method="post"
+    		url="#trelloCardsURL#"
+	>
+        <cfhttpparam	name="key"				type="URL"		value="#trelloKey#">
+        <cfhttpparam	name="token"			type="URL"		value="#trelloToken#">
+        <cfhttpparam	name="name"				type="URL"		value="testCard">   
+        <cfhttpparam	name="due"				type="URL"		value="null">   
+        <cfhttpparam	name="idList"			type="URL"		value="#idListIWant#">   
+        <cfhttpparam	name="urlSource"		type="URL"		value="null">   
+    </cfhttp>   
+<!--- end add card to list I want --->
+<!---generic form body--->
+<!---
+	<div>Some text fields for putting data into that will be put into the Trello card.</div>
+	<form action=>
+		<label for="Card_Name">Card Name</label>
+		<input type="text" id="Card_Name" size="20" maxlength="100"></input>
+		<br>
+		<label for="Card_Description">Card Description</label>
+		<input type="text" id="Card_Description" size="20" maxlength="100"></input>
+		<br>
+		<label for="Card_Members">Members</label>
+		<input type="text" id="Card_Members" size="20" maxlength="100"></input>
+		<br>
+		This is where I will put a button to click that will send some data to the Trello Test Board
+		<br>
+		<button name="Send_to_trello">Click me!</button></div>
+	</form>
+	</body>
+	</html>
+--->
+
