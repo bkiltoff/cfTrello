@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dwsync>
+<file name="oauthconsumer.cfc" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130780192830110897" remote="130780192830000000" Dst="2" />
+<file name="oauthconsumerdao.cfc" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130780192830180901" remote="130780192830000000" Dst="2" />
+<file name="oauthdatastore.cfc" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130780192830260824" remote="130780192830000000" Dst="2" />
+<file name="oauthrequest.cfc" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130780192830320823" remote="130780192830000000" Dst="2" />
+<file name="oauthserver.cfc" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130780192830370822" remote="130780192830000000" Dst="2" />
+<file name="oauthsignaturemethod.cfc" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130780192830410835" remote="130780192830000000" Dst="2" />
+<file name="oauthsignaturemethod_hmac_sha1.cfc" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130780192830460831" remote="130780192830000000" Dst="2" />
+<file name="oauthsignaturemethod_plaintext.cfc" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130780192830510835" remote="130780192830000000" Dst="2" />
+<file name="oauthtest.cfc" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130780192830570836" remote="130780192830000000" Dst="2" />
+<file name="oauthtoken.cfc" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130780192830620834" remote="130780192830000000" Dst="2" />
+<file name="oauthtokendao.cfc" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130780192830680837" remote="130780192830000000" Dst="2" />
+<file name="oauthutil.cfc" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130780192831040839" remote="130780192830000000" Dst="2" />
+</dwsync>

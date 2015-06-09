@@ -179,4 +179,17 @@ those artifacts are valid.
 		<cfreturn cfhttp.FileContent>
     </cffunction>
 
+<cfscript>
+<!---
+	postCard
+	post a card to a list on a board specified by name
+--->
+	public string function postCard(Boardname, Listname, CardObject)
+	{
+		targBoard = getBoardID(Boardname);
+		listSet = getBoardLists(targBoard);
+		targList = getListID(listSet, Listname)
+		postCardToList(
+	}
+</cfscript>
 </cfcomponent>
