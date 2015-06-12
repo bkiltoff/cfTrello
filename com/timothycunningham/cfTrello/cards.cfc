@@ -285,17 +285,17 @@
 			change the scope to read, these POST methods will error.									--->
 	
 	<cffunction name="setCard" >
-		<cfargument name="cardID" 				type="string" 	required="true" >
+		<cfargument name="cardID" 				type="string" 	required="false"																>
 		<cfargument name="name"					type="string"	required="true"						hint=" a string with a length from 1 to 16384">
 		<cfargument name="idList"				type="string"	required="true"						hint="id of the list that the card should be added to">
 		<cfargument name="desc"					type="string"	required="false"					hint="A user ID or name">
 		<cfargument name="pos"					type="string"	required="false"	default="bottom"hint="A position. top, bottom, or a positive number.">
 		<cfargument name="cardSourceID"			type="string"	required="false" 					hint="The id of the card to copy into a new card.">
-		<cfargument name="keepFromSource "		type="string"	required="false" 					hint="all or Properties of the card to copy over from the source.">
+		<cfargument name="keepFromSource"		type="string"	required="false" 					hint="all or Properties of the card to copy over from the source.">
 			
 		<cfset arguments.uriFilter = "cards">
-		<cfset arguments.verbs 		= "POST">
-		<cfinvoke method="callLists" returnvariable="local.return" argumentcollection="#arguments#"/>
+		<cfset arguments.verb 		= "POST">
+		<cfinvoke method="callCards" returnvariable="local.return" argumentcollection="#arguments#"/>
 		<cfreturn local.return>
 	</cffunction>
 	

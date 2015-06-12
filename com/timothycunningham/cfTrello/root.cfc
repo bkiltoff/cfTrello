@@ -55,48 +55,70 @@
 			<cfset arguments.formatType = "Struct">
 		</cfif>
         
-		<!--- Test --->
-        <cfoutput>
-            <br>
-                <cfdump var="serializeJson(arguments)=#serializeJson(arguments)#">
-            <br>
-        </cfoutput>
-        <!--- End Test --->
+	<!--- Test --->
+    <cfoutput>
+        <br>
+            <cfdump var="serializeJson(arguments)=#serializeJson(arguments)#">
+        <br>
+    </cfoutput>
+    <!--- End Test --->
 
 		<cfset structAppend(variables,getPRC(),"true")>		
 		<cfset variables.rawReturn = "">
 		<cfset variables.arg = "">
 		<cfset variables.apiCall = "">
 
-		<cfset variables.apiCall = apiURL  & "#arguments.uriFilter#/">
-		<cfset apicall = apiCall & "?key=#sConsumerKey#">
-		<!--- Append the other arguments passed in --->
+		<cfset variables.apiCall = apiURL  & "#arguments.uriFilter#">
 
-		<cfloop collection="#arguments#" item="arg">	
-			<cfif isSimpleValue(arguments[arg]) AND  arg NEQ "urifilter" AND arg NEQ "formatType" AND arg NEQ "Verb">	
-			<cfset apiCall = apiCall & "&#arg#=#arguments[arg]#">
-			</cfif>
-		</cfloop>	
-		<cfif saccesstoken NEQ "">
-			<cfset apiCall = apiCall & "&token=#saccesstoken#">
-		</cfif>
-        
-		<!--- test --->
-        <cfoutput>
-            <br>
-                <cfdump var="ApiCall=#apiCall#">
-            <br>
-        </cfoutput>
-        <!--- end test --->
+	<!--- test --->
+    <cfoutput>
+        <br>
+            <cfdump var="ApiCall=#apiCall#">
+        <br>
+        	<cfset textfield= structNew()>
+    </cfoutput>
+    <!--- End Test --->
+    
+		<!--- Append the other arguments passed in as parameters to a cfhttp request--->
+			<cfhttp url="#apiCall#" method="#arguments.verb#" result="variables.rawReturn">
+                <cfhttpparam name="key" type="URL" value="#sConsumerKey#">
+	<!--- Test --->
+        <br>
+            <cfset textfield.key = "#sConsumerKey#">
+            <cfset textfield.verb= "#arguments.verb#">
+        <br>
+	<!--- End Test --->
+                <cfif saccesstoken NEQ "">
+                    <cfhttpparam name="token" type="URL" value="#sAccessToken#">
+	<!--- Test --->
+        <br>
+            <cfset textfield.token = "#sAccessToken#">
+        <br>
+	<!--- End Test --->
 
-		<cfif arguments.verb NEQ "post">
-			<cfhttp url="#apiCall#" method="#arguments.verb#" result="rawReturn">
-		<cfelse>
-			<cfhttp url="#apiCall#" method="#arguments.verb#" result="rawReturn">
-				<cfhttpparam type="body" value="">
-			</cfhttp>
-			
-		</cfif>
+                </cfif>
+
+                <cfloop collection="#arguments#" item="arg">	
+                    <cfif isSimpleValue(arguments[arg]) AND  arg NEQ "urifilter" AND arg NEQ "formatType" AND arg NEQ "Verb">	
+                        <cfhttpparam name="#arg#" type="URL" value="#arguments[arg]#">
+
+	<!--- Test --->
+        <br>
+            <cfset textfield[arg] = "#arguments[arg]#">
+        <br>
+	<!--- End Test --->
+                        </cfif>
+                </cfloop>	           		
+
+			</cfhttp>		
+	<!--- Test --->
+	<cfoutput>
+        <br>
+            <cfdump var="#textfield#">
+        <br>
+    </cfoutput>
+	<!--- End Test --->
+
 		<cfset  return = getApiReturn(rawReturn, arguments.formatType)>
         
 		<!--- 	--------------------------------------------------
