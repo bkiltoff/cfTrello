@@ -3,14 +3,15 @@
 <file name="index.cfm" server="C:/ColdFusion11/cfusion/wwwroot" local="130779302940607428" remote="130779302940000000" Dst="2" />
 <file name=".gitattributes" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130634386487196491" remote="130634386480000000" Dst="2" />
 <file name="apiCalls.txt" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130779337003405966" remote="130779337000000000" Dst="2" />
-<file name="index.cfm" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130783405099783277" remote="130783405090000000" Dst="2" />
+<file name="index.cfm" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130803417973779110" remote="130803417970000000" Dst="2" />
 <file name="trelloAuth.cfc" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130780195280709255" remote="130780195280000000" Dst="2" />
-<file name="reset.cfm" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130760323854284996" remote="130760323850000000" Dst="2" />
-<file name="code snips.txt" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130780167879430108" remote="130780167870000000" Dst="2" />
-<file name="application.cfc" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130783630953773397" remote="130783630950000000" Dst="2" />
+<file name="reset.cfm" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130802493816220467" remote="130802493810000000" Dst="2" />
+<file name="code snips.txt" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130803420404697175" remote="130803420400000000" Dst="2" />
+<file name="application.cfc" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130804246068684865" remote="130804246060000000" Dst="2" />
 <file name="callback.cfm" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130780192830020855" remote="130780192830000000" Dst="2" />
 <file name="readme.md" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130780192833370881" remote="130780192830000000" Dst="2" />
-<file name="test.cfm" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130786253882014791" remote="130786253880000000" Dst="2" />
+<file name="test.cfm" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130803424602554767" remote="130803424600000000" Dst="2" />
 <file name="rootProxy.cfc" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130783386878551709" remote="130783386870000000" Dst="2" />
 <file name=".project" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130784465927336258" remote="130784465920000000" Dst="2" />
+<file name="accessDenied.cfm" server="C:/ColdFusion11/cfusion/wwwroot/trelloTest/" local="130804186177427306" remote="130804186170000000" Dst="2" />
 </dwsync>

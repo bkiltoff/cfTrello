@@ -1,5 +1,27 @@
 
 
+<!--- Manually test cfhttp post method --->
+<!--- 
+<cfset variables.return="">
+	<cfhttp method="post" 
+			url="https://api.trello.com/1/cards"
+			result="variables.return">
+            <cfhttpparam name="key"			type="URL"	value="821653d6e0f6fe0cbf6908f058b13596">
+            <cfhttpparam name="token"		type="URL"	value="e3b16e8f5f757d97b2ac69baf5c9e0282886bda32430b1cd8435bafd9d1b64c9">   <!---expires daily--->
+			<cfhttpparam name="name"		type="URL"	value="apiTest3">
+            <cfhttpparam name="due"			type="URL"	value="null">
+            <cfhttpparam name="desc"		type="URL"  value="A test description">
+            <cfhttpparam name="idList"		type="URL"	value="#listID#">
+	</cfhttp>
+<cfoutput>
+ <div>CFDump Variables.Return</div>
+    <cfdump var="#variables.return#">
+<div>End output</div>
+</cfoutput> 
+--->
+
+
+
 <cfset trelloBoardsURL	="https://api.trello.com/1/boards/P66f8VXz" />
 <cfset trelloListsURL	=trelloBoardsURL&"/lists" 					/>
 <cfset trelloCardsURL 	="https://api.trello.com/1/cards"			/>

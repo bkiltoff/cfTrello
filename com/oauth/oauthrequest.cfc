@@ -36,6 +36,11 @@ History:
 	<!--- utility functions --->
 	<cfset variables.oUtil = CreateObject("component","oauthutil").init()>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---init()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="init" returntype="oauthrequest" output="false">
 		<cfargument name="sHttpMethod" required="true" type="string" hint="request method">
 		<cfargument name="sHttpURL" required="true" type="string" hint="request URL">
@@ -75,35 +80,79 @@ History:
 			<cfset setVersion(arguments.sOAuthVersion)>
 			<cfset setParameter(sKey = "oauth_version", sValue = arguments.sOAuthVersion)>
 		</cfif>
-
 		<cfreturn this>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getHttpMethod()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getHttpMethod" access="public" returntype="string">
 		<cfreturn variables.sHttpMethod>
 	</cffunction>
+    
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---setHttpMethod()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="setHttpMethod" access="public" returntype="void">
 		<cfargument name="sHttpMethod" type="string" required="yes">
 		<cfset variables.sHttpMethod = arguments.sHttpMethod>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getHttpURL()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getHttpURL" access="public" returntype="string">
 		<cfreturn variables.sHttpURL>
 	</cffunction>
+    
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---setHttpURL()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="setHttpURL" access="public" returntype="void">
 		<cfargument name="sHttpURL" type="string" required="yes">
 		<cfset variables.sHttpURL = arguments.sHttpURL>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getParameters()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getParameters" access="public" returntype="struct">
 		<cfreturn variables.stParameters>
 	</cffunction>
+   
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getParameterKeys()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getParameterKeys" access="public" returntype="array">
 		<cfreturn variables.stParameters["paramKeys"]>
 	</cffunction>
+    
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getParameterValues()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getParameterValues" access="public" returntype="array">
 		<cfreturn variables.stParameters["paramValues"]>
 	</cffunction>
+    
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---setParameters()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="setParameters" access="public" returntype="void">
 		<cfargument name="stParameters" type="struct" required="false" default="#StructNew()#">
 		<cfargument name="aParameterKeys" type="array" required="false" default="#ArrayNew(1)#">
@@ -118,7 +167,7 @@ History:
 			</cfloop>
 		<cfelseif structCount(stParameters) AND  ArrayLen(arguments.aParameterKeys) IS 0 AND ArrayLen(arguments.aParameterValues) IS 0>
 			<cfloop collection="#arguments.stParameters#" item="i">
-				<cfset setParameter(sKey = i, sValue = arguments.stParameters[i])>
+				<cfset setParameter(sKey = i, sValue = arguments.stParameters[i])>                          
 			</cfloop>
 		<cfelseif ArrayLen(arguments.aParameterKeys) IS 0 AND ArrayLen(arguments.aParameterValues) IS 0>
 			<cfset aTempKeys = StructKeyArray(arguments.stParameters)>
@@ -131,19 +180,30 @@ History:
 			</cfloop>
 		</cfif>
 	</cffunction>
+    
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---setParameter()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="setParameter" access="public" returntype="void" hint="sets parameter value">
 		<cfargument name="sKey" type="string" required="true" hint="parameter name">
 		<cfargument name="sValue" type="string" required="true" hint="parameter value">
 		<cfset ArrayAppend(variables.stParameters["paramKeys"], lcase(arguments.sKey))>
 		<cfset ArrayAppend(variables.stParameters["paramValues"], arguments.sValue)>
 	</cffunction>
+    
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getParameter()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getParameter" access="public" returntype="any" hint="retrieves paramater value">
 		<cfargument name="sParameterName" 	type="string"	required="true"	hint="parameter name">
 		<cfset var sResult = "">
 		<cfset var aKeys = getParameterKeys()>
 		<cfset var aValues = getParameterValues()>
 		<cfset var i = 0>
-
 		<cfloop from="1" to="#ArrayLen(aKeys)#" index="i">
 			<cfif CompareNoCase(aKeys[i],arguments.sParameterName) IS 0>
 			<!--- <cfif CompareNoCase(aKeys[i],arguments.sParameterName) IS 0> --->
@@ -157,9 +217,14 @@ History:
 				<cfreturn aValues[i]>
 			</cfif>
 		</cfloop>
-
 		<cfreturn sResult>
 	</cffunction>
+    
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---removeParameter()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="removeParameter" access="public" returntype="void" hint="retrieves paramater value">
 		<cfargument name="sParameterName" 	type="string"	required="true"	hint="parameter name">
 		<cfset var aOldKeys = getParameterKeys()>
@@ -167,7 +232,6 @@ History:
 		<cfset var aNewKeys = ArrayNew(1)>
 		<cfset var aNewValues = ArrayNew(1)>
 		<cfset var i = 0>
-
 		<cfloop from="1" to="#ArrayLen(aOldKeys)#" index="i">
 			<cfif Compare(aOldKeys[i],arguments.sParameterName) NEQ 0>
 				<cfset ArrayAppend(aNewKeys, aOldKeys[i])>
@@ -179,6 +243,12 @@ History:
 		<!--- set new values --->
 		<cfset setParameters(aParameterKeys = aNewKeys, aParameterValues = aNewValues)>
 	</cffunction>
+    
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---updateParameter()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="updateParameter" access="public" returntype="void">
 		<cfargument name="sParameterName" 	type="string"	required="true"	hint="parameter name">
 		<cfargument name="sParameterValue" 	type="string"	required="true"	hint="parameter value">
@@ -194,19 +264,41 @@ History:
 		<!--- none found, add as new parameter --->
 		<cfset setParameter(sKey = arguments.sParameterName, sValue = arguments.sParameterValue)>
 	</cffunction>
+    
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---clearParameters()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="clearParameters" access="public" returntype="void">
 		<cfset variables.stParameters["paramKeys"] = ArrayNew(1)>
 		<cfset variables.stParameters["paramValues"] = ArrayNew(1)>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getVersion()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getVersion" access="public" returntype="string" hint="version">
 		<cfreturn variables.sOAuthVersion>
 	</cffunction>
+    
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---setVersion()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="setVersion" access="public" returntype="void">
 		<cfargument name="sOAuthVersion" type="string" required="yes">
 		<cfset variables.sOAuthVersion = arguments.sOAuthVersion>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---isEmpty()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="isEmpty" access="public" returntype="boolean">
 		<cfset var bResult = false>
 		<cfif Len(getHttpMethod()) IS 0 AND Len(getHttpURL()) IS 0>
@@ -215,12 +307,23 @@ History:
 		<cfreturn bResult>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---createEmptyRequest()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="createEmptyRequest" returntype="oauthrequest" access="public">
 		<cfset var oResult = init(sHttpMethod = "", sHttpURL = "")>
 		<cfreturn oResult>
 	</cffunction>
 
-	<!--- attempt to build up a request from what was passed to the server --->
+	
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---fromRequest() - attempt to build up a request from what was passed 
+to the server--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="fromRequest" access="public" returntype="oauthrequest">
 		<cfargument name="sHttpMethod" required="false" type="string" default="">
 		<cfargument name="sHttpURL" required="false" type="string" default="">
@@ -291,30 +394,30 @@ History:
 		<cfreturn oResultRequest>
 	</cffunction>
 
-	<!--- helper function to set up the request --->
+	
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---fromConsumerAndToken()- helper function to set up the request--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="fromConsumerAndToken" access="public" returntype="oauthrequest">
 		<cfargument name="oConsumer"	required="true" type="oauthconsumer">
 		<cfargument name="oToken" 		required="true" type="oauthtoken">
 		<cfargument name="sHttpMethod" 	required="true" type="string">
 		<cfargument name="sHttpURL" 	required="true"	type="string">
 		<cfargument name="stParameters"	required="false" type="struct" default="#StructNew()#">
-
 		<cfset var oResultRequest = createEmptyRequest()>
 		<cfset var stNewParameters = StructNew()>
 		<cfset var stDefault = StructNew()>
-
 		<cfset stDefault["oauth_version"] = getVersion()>
 		<cfset stDefault["oauth_nonce"] = generateNonce()>
 		<cfset stDefault["oauth_timestamp"] = generateTimestamp()>
 		<cfset stDefault["oauth_consumer_key"] = arguments.oConsumer.getKey()>
-
 		<cfset stNewParameters = arguments.stParameters>
 		<cfset StructAppend(stNewParameters, stDefault, "yes")>
-
 		<cfif NOT arguments.oToken.isEmpty()>
 			<cfset stNewParameters["oauth_token"] = arguments.oToken.getKey()>
 		</cfif>
-
 		<cfset oResultRequest = CreateObject("component", "oauthrequest").init(
 			sHttpMethod = arguments.sHttpMethod,
 			sHttpURL = arguments.sHttpURL,
@@ -323,11 +426,22 @@ History:
 	</cffunction>
 
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getNormalizedHttpMethod()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getNormalizedHttpMethod" access="public" returntype="string">
 		<cfreturn UCase(variables.sHttpMethod)>
 	</cffunction>
 
-   <!--- parses the url and rebuilds it to be [scheme://host/path] --->
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getNormalizedHttpURL() - parses the url and rebuilds it 
+								to be [scheme://host/path]--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getNormalizedHttpURL" access="public" returntype="string" output="false">
 		<cfargument name="sScheme" type="string" required="false" default="http://">
 		<cfargument name="iPort" type="string" required="false" default="" hint="not used currently">
@@ -352,6 +466,11 @@ History:
 		<cfreturn sResult>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getSignableParametersOld()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getSignableParametersOld" access="public" returntype="string">
 		<cfset var aResult = ArrayNew(1)>
 		<cfset var sResult = "">
@@ -373,7 +492,13 @@ History:
 		<cfreturn sResult>
 	</cffunction>
 
-	<!--- return a string that consists of all the parameters that need to be signed --->
+	
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getSignableParameters()-  return a string that consists of all 
+									the parameters that need to be signed--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getSignableParameters" access="public" returntype="string">
 		<cfset var outerCnt = 0>
 		<cfset var innerCnt = 0>
@@ -424,14 +549,25 @@ History:
 		<cfreturn ArrayToList(aResult,"&")>
 	</cffunction>
 
-	<!--- builds an URL usable for a GET request --->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---toURL() - builds an URL usable for a GET request --->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+
 	<cffunction name="toURL" access="public" output="false" returntype="string">
 		<cfset var sResult = getNormalizedHttpURL() & "?">
 		<cfset sResult = sResult & toPostData()>
 		<cfreturn sResult>
 	</cffunction>
 
-  	<!--- builds the data one would send in a POST request, parameters are sorted alphabetically & url encoded --->
+  	
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---toPostData() - builds the data one would send in a POST request, 
+					parameters are sorted alphabetically & url encoded--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="toPostData" access="public" returntype="string">
 		<cfset var aTotal = ArrayNew(1)>
 		<cfset var sResult = "">
@@ -458,11 +594,12 @@ History:
 				<cfset StructInsert(stKeyValues, aParameterKeys[outerCnt], aTemp)>
 			</cfif>
 		</cfloop>
+        
 		<!--- use sorted keys --->
 		<cfset aSortedKeys = StructKeyArray(stKeyValues)>
 		<cfset ArraySort(aSortedKeys, "text", "asc")>
 
-		<cfloop from="1" to="#ArrayLen(aSortedKeys)#" index="outerCnt">
+		<cfloop from="1" to="#ArrayLen(aSortedKeys)#" index="outerCnt">   
 			<cfset sTemp = aSortedKeys[outerCnt]>
 			<!--- retrieve possible values for this key & sort them --->
 			<cfset aTemp = stKeyValues[sTemp]>
@@ -470,17 +607,22 @@ History:
 
 			<cfset aResultTemp = ArrayNew(1)>
 			<cfloop from="1" to="#ArrayLen(aTemp)#" index="innerCnt">
-				<cfset ArrayAppend(aResultTemp, "#variables.oUtil.encodePercent(sTemp)#=#variables.oUtil.encodePercent(aTemp[innerCnt])#")>
+				<cfset var tempString = "#variables.oUtil.encodePercent(sTemp)#=#variables.oUtil.encodePercent(aTemp[innerCnt])#">     
+				<cfset ArrayAppend(aResultTemp, "#tempString#")>
 			</cfloop>
 			<cfset ArrayAppend(aTotal, ArrayToList(aResultTemp, "&"))>
 		</cfloop>
 
 		<cfset sResult = ArrayToList(aTotal, "&")>
-
 		<cfreturn sResult>
 	</cffunction>
 
-  	<!--- builds the Authorization: header --->
+  	
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---toHeader() - builds the Authorization: header--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="toHeader" access="public" returntype="string" output="false">
 		<cfargument name="sHeaderRealm" default="" required="false" type="string">
 
@@ -509,10 +651,20 @@ History:
 		<cfreturn sResult>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getString()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getString" access="public" returntype="string">
 		<cfreturn toURL()>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---signRequest()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="signRequest" access="public" returntype="void" output="false">
 		<cfargument name="oSignatureMethod"	required="true" type="oauthsignaturemethod">
 		<cfargument name="oConsumer" 		required="true" type="oauthconsumer">
@@ -528,7 +680,12 @@ History:
 		<cfset setParameter(sKey = "oauth_signature", sValue = sSignature)>
 	</cffunction>
 
-	<!--- build url encoded signature --->
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---signaturebaseString() - build url encoded signature--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="signatureBaseString" access="public" returntype="string">
 		<cfset var aResult = ArrayNew(1)>
 		<cfset ArrayAppend( aResult, variables.oUtil.encodePercent( getNormalizedHttpMethod() ) )>
@@ -538,6 +695,11 @@ History:
 		<cfreturn ArrayToList(aResult, "&")>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---buildSignature()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="buildSignature" access="public" returntype="string" output="false">
 		<cfargument name="oSignatureMethod"	required="true" type="oauthsignaturemethod">
 		<cfargument name="oConsumer" 		required="true" type="oauthconsumer">
@@ -548,13 +710,23 @@ History:
 		<cfreturn sSignature>
 	</cffunction>
 
-	<!--- util function: current timestamp --->
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---generateTimestamp() - util function: current timestamp --->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="generateTimestamp" access="public" returntype="numeric">
 		<cfset var tc = CreateObject("java", "java.util.Date").getTime()>
 		<cfreturn Int(tc / 1000)>
 	</cffunction>
 
-	<!--- util function: current nonce --->
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---generateNonce()- util function: current nonce--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="generateNonce" access="public" returntype="string" output="false" hint="generate nonce value">
 		<cfset var iMin = 0>
 		<cfset var iMax = CreateObject("java","java.lang.Integer").MAX_VALUE>
@@ -563,7 +735,13 @@ History:
 		<cfreturn Hash(sToEncode, "SHA")/>
 	</cffunction>
 
-	<!--- util function for turning the Authorization: header into parameters, has to do some unescaping --->
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---splitHeader() - util function for turning the Authorization: header into 
+					parameters, has to do some unescaping--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="splitHeader" access="private" output="false" returntype="struct">
   		<cfargument name="sHeader" type="string" required="true" hint="authorization request header">
 

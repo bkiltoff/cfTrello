@@ -23,39 +23,79 @@ limitations under the License.
 <cfcomponent displayname="oauthtoken">
 	<cfset variables.sKey = "">
 	<cfset variables.sSecret = "">
+    <!--- oUtil object will help percent encode strings, per RFC 5849 --->
 	<cfset variables.oUtil = CreateObject("component","oauthutil").init()>
 
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---init()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="init" access="public" returntype="oauthtoken">
 		<cfargument name="sKey" required="true" type="string">
 		<cfargument name="sSecret" required="true" type="string">
-
 		<cfset setKey(arguments.sKey)>
 		<cfset setSecret(arguments.sSecret)>
-
 		<cfreturn this>
 	</cffunction>
 
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getKey()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getKey" access="public" returntype="string" output="false">
 		<cfreturn variables.sKey>
 	</cffunction>
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---setKey()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="setKey" access="public" returntype="void">
 		<cfargument name="sKey" type="string" required="yes">
 		<cfset variables.sKey = arguments.sKey>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getSecret()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getSecret" access="public" returntype="string" output="false">
 		<cfreturn variables.sSecret>
 	</cffunction>
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---setSecret()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="setSecret" access="public" returntype="void">
 		<cfargument name="sSecret" type="string" required="yes">
 		<cfset variables.sSecret = arguments.sSecret>
 	</cffunction>
 
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---createEmptyToken()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="createEmptyToken" access="public" returntype="oauthtoken">
 		<cfset var oEmptyToken = init(sKey="", sSecret="")>
 		<cfreturn oEmptyToken>
 	</cffunction>
 
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---isEmpty()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="isEmpty" access="public" returntype="boolean">
 		<cfset var bResult = false>
 		<cfif Len(getSecret()) IS 0 AND Len(getKey()) IS 0>
@@ -64,10 +104,13 @@ limitations under the License.
 		<cfreturn bResult>
 	</cffunction>
 
-	<!---
-		generates the basic string serialization of a token that a server
-		would respond to request_token and access_token calls with
-	--->
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getString() - generates the basic string serialization of a token that a 
+server would respond to request_token and access_token calls with--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getString" access="public" returntype="string" output="false">
 		<cfset var sResult = "oauth_token=" & variables.oUtil.encodePercent(variables.sKey) & "&" &
 			"oauth_token_secret=" & variables.oUtil.encodePercent(variables.sSecret)>

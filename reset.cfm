@@ -7,6 +7,6 @@
 
 <!--- Redirect back to overview. --->
 <cflocation
-	url="index.cfm"
+	url="index.cfm?clearMeCookies=clearMeCookies&restart=restart"
 	addtoken="false"
 />

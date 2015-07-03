@@ -27,12 +27,22 @@ History:
 
 <cfcomponent extends="oauthsignaturemethod" displayname="oauthsignaturemethod_hmac_sha1" hint="signature method using HMAC-SHA1">
 
-	<!--- returns the signature name --->
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getName() - returns the signature name--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getName" access="public" returntype="string" output="false">
 		<cfreturn "HMAC-SHA1">
 	</cffunction>
 
-	<!--- builds a SHA-1 signature --->
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---buildSignature()- builds a SHA-1 signature--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="buildSignature" access="public" returntype="string" output="false">
 		<cfargument name="oRequest"		required="true" type="oauthrequest">
 		<cfargument name="oConsumer"	required="true" type="oauthconsumer">
@@ -62,6 +72,11 @@ History:
 		<cfreturn sHashed>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---hmac_sha1() - helper method for building SHA-1 signature--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="hmac_sha1" returntype="string" access="public">
 	   <cfargument name="signKey" type="string" required="true">
 	   <cfargument name="signMessage" type="string" required="true">

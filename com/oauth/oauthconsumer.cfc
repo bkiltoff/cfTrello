@@ -28,6 +28,11 @@ limitations under the License.
 	<cfset variables.iConsumerID = 0>
 	<cfset variables.iEditorID = 1>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---init()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="init"	access="public" returntype="oauthconsumer">
 		<cfargument name="sKey"			required="true"		type="string"	hint="consumer key">
 		<cfargument name="sSecret" 		required="true" 	type="string" 	hint="consumer secret">
@@ -43,30 +48,69 @@ limitations under the License.
 		<cfreturn this>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getKey()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getKey" access="public" returntype="string">
 		<cfreturn variables.sKey>
 	</cffunction>
+    
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---setKey()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="setKey" access="public" returntype="void">
 		<cfargument name="sKey" type="string" required="yes">
 		<cfset variables.sKey = trim(arguments.sKey)>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getSecret()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getSecret" access="public" returntype="string">
 		<cfreturn variables.sSecret>
 	</cffunction>
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---setSecret()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="setSecret" access="public" returntype="void">
 		<cfargument name="sSecret" type="string" required="yes">
 		<cfset variables.sSecret = trim(arguments.sSecret)>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getCallbackURL()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getCallbackURL" access="public" returntype="string">
 		<cfreturn variables.sCallbackURL>
 	</cffunction>
+    
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---setCallbackURL()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="setCallbackURL" access="public" returntype="void">
 		<cfargument name="sCallbackURL" type="string" required="yes">
 		<cfset variables.sCallbackURL = arguments.sCallbackURL>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getConsumerID()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getConsumerID" access="public" returntype="numeric">
 		<cfargument name="oDataStore" required="false" type="oauthdatastore">
 		<cfif StructKeyExists(arguments, "oDataStore")>
@@ -74,11 +118,22 @@ limitations under the License.
 		</cfif>
 		<cfreturn variables.iConsumerID>
 	</cffunction>
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---setConsumerID()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="setConsumerID" access="public" returntype="void">
 		<cfargument name="iConsumerID" required="true" type="numeric">
 		<cfset variables.iConsumerID = arguments.iConsumerID>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getEditorID()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getEditorID" access="public" returntype="numeric">
 		<cfargument name="oDataStore" required="false" type="oauthdatastore">
 		<cfif StructKeyExists(arguments, "oDataStore")>
@@ -86,17 +141,32 @@ limitations under the License.
 		</cfif>
 		<cfreturn variables.iEditorID>
 	</cffunction>
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---setEditorID()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="setEditorID" access="public" returntype="void">
 		<cfargument name="iEditorID" required="true" type="numeric">
 		<cfset variables.iEditorID = arguments.iEditorID>
 	</cffunction>
 
-
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---createEmptyConsumer()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="createEmptyConsumer" access="public" returntype="oauthconsumer">
 		<cfset var oResult = init(sKey = "", sSecret = "")>
 		<cfreturn oResult>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---isEmpty()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="isEmpty" access="public" returntype="boolean">
 		<cfset var bResult = false>
 		<cfif Len(getKey()) IS 0 AND Len(getSecret()) IS 0>

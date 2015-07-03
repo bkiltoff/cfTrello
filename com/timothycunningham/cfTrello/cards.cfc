@@ -13,7 +13,7 @@
 		<cfargument name="uriFilter" 	type="string" 	required="true" 	default="">
 		
 		<cfset var	call	= "">
-		<cfinvoke method="doApicall" returnvariable="call" argumentcollection="#arguments#"/>
+		<cfinvoke method="doApicall" returnvariable="call" argumentcollection=#arguments#/>
 		<cfreturn call>
 	</cffunction>
 	
@@ -284,21 +284,38 @@
 			read,write,account which is the highest level of permission granted via the API.  If you
 			change the scope to read, these POST methods will error.									--->
 	
+    <cfscript>
+	function setCard(required string cardName, required string targetListID, string dueDate="null", string cardDesc="", 
+						string cardPosition="bottom", string srcCardID="", string keepFromSourceCard="")
+	{
+		args["name"] 			=	cardName;
+		args["idList"]			=	targetListID;
+		args["due"]				=	dueDate;
+		if(cardDesc != "")				{	args["desc"]			=	cardDesc;			}
+		if(cardPosition != "")			{	args["pos"]				=	cardPosition;		}
+		if(srcCardID != "") 			{	args["idCardSource"]	=	srcCardID;			}
+		if(keepFromSourceCard != "")	{	args["keepFromSource"]	=	keepFromSourceCard;	}
+
+		var call = callCards(verb="POST",uriFilter="cards",argumentcollection=#args#);
+		return call;
+	}
+	</cfscript>
+<!---     
 	<cffunction name="setCard" >
-		<cfargument name="cardID" 				type="string" 	required="false"																>
-		<cfargument name="name"					type="string"	required="true"						hint=" a string with a length from 1 to 16384">
-		<cfargument name="idList"				type="string"	required="true"						hint="id of the list that the card should be added to">
-		<cfargument name="desc"					type="string"	required="false"					hint="A user ID or name">
-		<cfargument name="pos"					type="string"	required="false"	default="bottom"hint="A position. top, bottom, or a positive number.">
-		<cfargument name="cardSourceID"			type="string"	required="false" 					hint="The id of the card to copy into a new card.">
-		<cfargument name="keepFromSource"		type="string"	required="false" 					hint="all or Properties of the card to copy over from the source.">
+		<cfargument name="name"				type="string"	required="true"							hint="a string with a length from 1 to 16384">
+        <cfargument name="due"				type="string"	required="true"		default="null"		hint="A date or null">
+		<cfargument name="idList"			type="string"	required="true"							hint="id of the list that the card should be added to">
+		<cfargument name="desc"				type="string"	required="false"						hint="A user ID or name">
+		<cfargument name="pos"				type="string"	required="false"	default="bottom"	hint="A position. top, bottom, or a positive number.">
+		<cfargument name="idCardSource"		type="string"	required="false" 						hint="The id of the card to copy into a new card.">
+		<cfargument name="keepFromSource"	type="string"	required="false" 						hint="all or Properties of the card to copy over from the source.">
 			
 		<cfset arguments.uriFilter = "cards">
 		<cfset arguments.verb 		= "POST">
-		<cfinvoke method="callCards" returnvariable="local.return" argumentcollection="#arguments#"/>
+		<cfinvoke method="callCards" returnvariable="local.return" argumentcollection=#arguments#/>
 		<cfreturn local.return>
 	</cffunction>
-	
+ --->	
 	<cffunction name="setComment" >
 		<cfargument name="cardID" 				type="string" 	required="true" >
 		<cfargument name="text"					type="string"	required="true"					hint="a string with a length from 1 to 16384">
@@ -316,7 +333,7 @@
 		
 		<cfset arguments.uriFilter = "cards/#arguments.cardID#/attachments">
 		<cfset arguments.verbs 		= "POST">
-		<cfinvoke method="callLists" returnvariable="local.return" argumentcollection="#arguments#"/>
+		<cfinvoke method="callLists" returnvariable="local.return" argumentcollection=#arguments#/>
 		<cfreturn local.return>
 	</cffunction>
 	

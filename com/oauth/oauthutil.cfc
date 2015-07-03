@@ -22,10 +22,20 @@ limitations under the License.
 
 <cfcomponent displayname="oauthutil" hint="utility functions">
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---init()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="init" returntype="oauthutil" output="false">
 		<cfreturn this>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---readPropertiesFile()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="readPropertiesFile" returntype="struct" description="I read a .properties file.">
 		<cfargument name="filePath" type="string" required="true" hint="full file path">
 		<cfargument name="sCommentDelimiters" type="string" required="false" default="!,##">
@@ -91,7 +101,11 @@ limitations under the License.
 		<cfreturn stResult>
 	</cffunction>
 
-
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---toUnicodeChar()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="toUnicodeChar" access="public" returntype="string" description="I return the ColdFusion representation of an unicode charatacter.">
 		<cfargument name="sUnicodeChar" type="string" required="true" hint="Unicode character format: U+XXXX or \uXXXX">
 		<cfargument name="iRadix" type="numeric" required="false" default="16" hint="default : hex">
@@ -106,6 +120,11 @@ limitations under the License.
 		<cfreturn sResult>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---encodePercent()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="encodePercent" returntype="string" access="public"
 				description="RFC 3986 encoding - keep [ALPHA, DIGIT, '-', '.', '_', '~'], %-encode the rest -> decoding '~', correctly encoding spaces('+') and '*'">
 		<cfargument name="sValue"		required="true" type="string" hint="value to encode">
@@ -123,6 +142,11 @@ limitations under the License.
 		<cfreturn sResult>
 	</cffunction>
 
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---decodePercent()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="decodePercent" returntype="string" access="public" description="">
 		<cfargument name="sValue"		required="true" type="string" hint="value to encode">
 		<cfargument name="sEncoding"	required="false" type="string" default="UTF-8" hint="encoding">

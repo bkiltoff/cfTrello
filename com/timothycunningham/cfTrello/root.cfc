@@ -1,4 +1,11 @@
 ﻿<cfcomponent>
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getPRC - Returns application-scoped variables defined on application start 
+  with session variables, as listed in the "sessionInit" method, in a struct--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getPRC">
 		<cfset var prc = structNew()>
 		<cfset prc.apiURL					= application.apiURL>
@@ -11,7 +18,12 @@
 		<cfset structAppend(prc,session, "true")>		
 		<cfreturn prc>
 	</cffunction>
-
+	
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---sessionInit() - Defines session scope variables--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="sessionInit">
 		<cfset session.oauth_token 			= "">
 		<cfset session.sAccessToken 		= "">
@@ -20,7 +32,12 @@
 		<cfset session.boardID				= "">
 		<cfreturn>
 	</cffunction>
-	
+    
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getHttpType() - returns string for either http or https--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getHttpType">
 		<cfif cgi.https is "off">
 			<cfreturn "http://">
@@ -30,128 +47,70 @@
 		<cfreturn "http://">
 	</cffunction>
 	
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---setTargetPage() - define session-scoped variable: "targetPage"--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="setTargetPage">
-		<cfargument name="targetPage" required="true" type="string" default="#getHttpType()##cgi.server_name#">
+		<cfargument name="targetPage" required="true" type="string" default="#getHttpType()##cgi.server_name#:8500">
 		<cfset session.targetPage = arguments.targetPage>
 		<cfreturn session.targetPage>
 	</cffunction>
 	
+    <!--- return sesssion-scoped variable: "targetPage"--->
 	<cffunction name="getTargetPage">
 		<cfreturn session.targetPage>
 	</cffunction>
 	
-<!--- =========================================================================
-==============================doApiCall========================================
-=============================================================================== --->		
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---doApiCall - Generic function to generate a RESTful API call--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="doApiCall" access="public" hint="generic caller to Trello API">
 		<cfargument name="verb" 		type="string" 	required="true" 	default="get">
 		<cfargument name="uriFilter" 	type="string" 	required="true" >
 		
 		<!--- Set up needed variables --->
-		<cfif ISDefined("arguments.fields") IS False>
-			<cfset arguments.fields = structNew()>
-		</cfif>
-		<cfif ISDefined("arguments.formatType") IS False>
+ 		<cfif ISDefined("arguments.formatType") IS False>
 			<cfset arguments.formatType = "Struct">
 		</cfif>
-        
-	<!--- Test --->
-    <cfoutput>
-        <br>
-            <cfdump var="serializeJson(arguments)=#serializeJson(arguments)#">
-        <br>
-    </cfoutput>
-    <!--- End Test --->
-
 		<cfset structAppend(variables,getPRC(),"true")>		
 		<cfset variables.rawReturn = "">
 		<cfset variables.arg = "">
 		<cfset variables.apiCall = "">
-
 		<cfset variables.apiCall = apiURL  & "#arguments.uriFilter#">
 
-	<!--- test --->
-    <cfoutput>
-        <br>
-            <cfdump var="ApiCall=#apiCall#">
-        <br>
-        	<cfset textfield= structNew()>
-    </cfoutput>
-    <!--- End Test --->
-    
-		<!--- Append the other arguments passed in as parameters to a cfhttp request--->
-			<cfhttp url="#apiCall#" method="#arguments.verb#" result="variables.rawReturn">
-                <cfhttpparam name="key" type="URL" value="#sConsumerKey#">
-	<!--- Test --->
-        <br>
-            <cfset textfield.key = "#sConsumerKey#">
-            <cfset textfield.verb= "#arguments.verb#">
-        <br>
-	<!--- End Test --->
-                <cfif saccesstoken NEQ "">
-                    <cfhttpparam name="token" type="URL" value="#sAccessToken#">
-	<!--- Test --->
-        <br>
-            <cfset textfield.token = "#sAccessToken#">
-        <br>
-	<!--- End Test --->
-
+		<!--- create the cfhttp request--->
+			<cfhttp url=#apiCall# method=#arguments.verb# result=variables.rawReturn>
+            	<!--- Add application key and token --->
+                <cfhttpparam name="key" type="URL" value=#sConsumerKey#>
+                <cfif #sAccessToken# NEQ "">
+                	<cfhttpparam name="token" type="URL" value=#sAccessToken#>
                 </cfif>
-
-                <cfloop collection="#arguments#" item="arg">	
-                    <cfif isSimpleValue(arguments[arg]) AND  arg NEQ "urifilter" AND arg NEQ "formatType" AND arg NEQ "Verb">	
-                        <cfhttpparam name="#arg#" type="URL" value="#arguments[arg]#">
-
-	<!--- Test --->
-        <br>
-            <cfset textfield[arg] = "#arguments[arg]#">
-        <br>
-	<!--- End Test --->
-                        </cfif>
+                <!--- append other arguments as cfhttpparam tags --->
+                <cfloop collection=#arguments# item="arg">	
+                    <cfif isSimpleValue(#arguments[arg]#) AND  #arg# NEQ "uriFilter" AND #arg# NEQ "formatType" AND #arg# NEQ "verb">	
+                        <cfhttpparam name=#arg# type="URL" value=#arguments[arg]#>
+                    </cfif>
                 </cfloop>	           		
-
 			</cfhttp>		
-	<!--- Test --->
-	<cfoutput>
-        <br>
-            <cfdump var="#textfield#">
-        <br>
-    </cfoutput>
-	<!--- End Test --->
-
 		<cfset  return = getApiReturn(rawReturn, arguments.formatType)>
-        
-		<!--- 	--------------------------------------------------
-                application seems to run fine without this block of code
-        
-        <!--- not sure what this block does (if anything) --->
-                <cfset var return = structNew()>
-                <cfset return.apiCall =  apiCall>
-        <!---  end mystery block --->
-                -------------------------------------------------- --->
  		<cfreturn return>
 	</cffunction>
 
-<!--- =========================================================================
-==============================getApiReturn=====================================
-=============================================================================== --->		
-	
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getAPIReturn()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getAPIReturn" access="public" hint="Formats the return call from Trello">
 		<cfargument name="rawReturn"  type="struct" required="true">
 		<cfargument name="formatType" type="string" required="true" default="Struct" hint="JSON or Struct (Deserialized JSON)">
 		<cfset var errorReturn = structNew()>
-
-	<!---- test --->
-            <cfset var fileContentToString = rawReturn.fileContent.toString()>
-    <cfoutput>
-            <br>
-            <cfdump var="File content to string: #fileContentToString#">
-            <br>
-            <cfset boolStr = toString(isStruct(rawReturn))>
-            <cfdump var="rawReturn is struct=#boolStr#">
-    </cfoutput>
-    <!---- end test --->
-
 		<cfif isStruct(rawReturn) AND isJsON(rawReturn.fileContent.toString()) AND arguments.formatType IS "Struct">
 			<cfreturn deserializeJson(rawReturn.fileContent.toString())>
 		</cfif>
@@ -171,6 +130,12 @@
 		<cfreturn errorReturn>
 	</cffunction>
 
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---setTokenStorage()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="setTokenStorage">
 		<cfargument name="accessToken" 					required="true" >
 		<cfargument name="length"		type="numeric"	required="true"	default=30>
@@ -179,7 +144,12 @@
 		
 		<cfreturn>
 	</cffunction>
-	
+   
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---getTokenStorage()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="getTokenStorage">
 		<cfif ISDefined("cookie.sAccessToken") AND cookie.sAccessToken NEQ "">
 			<cfset session.sAccessToken = cookie.sAccessToken>
@@ -187,7 +157,12 @@
 		</cfif>
 		<cfreturn "">
 	</cffunction>
-	
+
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!---clearTokenStorage()--->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
 	<cffunction name="clearTokenStorage">
 		<cfset cookie.sAccessToken = "">
 		<cfreturn>
