@@ -56,9 +56,6 @@ invokes the setTokens() function --->
 		<cfset parameters["scope"] 		=	arguments.scope>
         <cfset parameters["name"]		=	arguments.sitename>
         <cfset parameters["expiration"]	=	arguments.expiration>
-		<!--- sAuthURL will be the URL 	for redirecting 
-		the browser to Trello to authorize a token --->
-        <cfset var sAuthURL 			= ""> 
 		
         
         <!--- oReqSigMethodSHA object will be used to create signature string --->
@@ -114,11 +111,11 @@ invokes the setTokens() function --->
         <cfloop list="#structKeyList(parameters)#" index="i" >
             <cfset parameterString = parameterString & i & "=" & parameters[i] & "&" />
         </cfloop>            
- 		<cfset var AuthURL	= sAuthorizationEndpoint & "?" & parameterString &
+ 		<cfset var sAuthURL	= sAuthorizationEndpoint & "?" & parameterString &
 							"oauth_token=" & sRequestToken & "&" & 
 							"oauth_callback=" & URLEncodedFormat(sCallbackURL)>
  
-		<cflocation url="#sAuthUrl#" >	
+		<cflocation url="#sAuthURL#" >	
 		<cfreturn>
 	</cffunction>
 
@@ -138,7 +135,7 @@ invokes the setTokens() function --->
         
         <!--- Handle case where user selected "Deny" --->
 		<cfif StructKeyExists(url,"oauth_token") NEQ True>
-			<cflocation url="accessDenied.cfm" addtoken="no" />
+			<cflocation url="/trelloTest/denied/accessDenied.cfm"/>
         </cfif>
         
 		<cfset oReqSigMethodSHA 				= CreateObject("component", 
@@ -173,7 +170,9 @@ invokes the setTokens() function --->
 		<cfreturn true>
 	</cffunction>
 
-<!----------------------------------------------------------------------------->
+<!---consider for deletion - this code is already in root.cfc, not sure why it's
+replicated here
+ <!----------------------------------------------------------------------------->
 <!----------------------------------------------------------------------------->
 <!---setTokenStorage()--->
 <!----------------------------------------------------------------------------->
@@ -209,5 +208,5 @@ invokes the setTokens() function --->
 	<cffunction name="clearTokenStorage">
 		<cfset cookie.sAccessToken = "">
 		<cfreturn>
-	</cffunction>
+	</cffunction> --->
 </cfcomponent> 

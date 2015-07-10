@@ -66,10 +66,12 @@
 <cffunction name="onRequest" >
 	<cfargument name="targetPage" type="string" required="true" hint="The requested ColdFusion Template">
 	<!--- if requested page is not ""callback.cfm"--->
+
 	<cfif arguments.targetPage NEQ replaceNoCase(application.sCallbackURL, "#getHttpType()##cgi.server_name#:8500", "")>
     	<!--- then call getTrelloLogin method --->
 		<cfset session.login.getTrelloLogin(targetPage=arguments.targetPage)>
 	</cfif>
+
 	<cfset var prc = getPRC()>
     <!--- pull up targetPage --->
 	<cfinclude template="#arguments.targetPage#">
